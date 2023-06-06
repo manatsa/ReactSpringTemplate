@@ -11,11 +11,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.zimnat.lionloader.aop.annotation.Auditor;
 import org.zimnat.lionloader.business.domain.User;
 import org.zimnat.lionloader.business.domain.dto.UserDTO;
 import org.zimnat.lionloader.business.security.provider.UserDetailsServiceImpl;
 import org.zimnat.lionloader.business.services.UserService;
 import org.zimnat.lionloader.exceptions.AccountLockedException;
+import org.zimnat.lionloader.exceptions.InternalServerErrorException;
 import org.zimnat.lionloader.utils.APIResponse;
 
 
@@ -45,10 +47,10 @@ public class JwtAuthenticationController {
     PasswordEncoder passwordEncoder;
 
 
-
+    @Auditor
     @RequestMapping(value = "authenticate", method = RequestMethod.POST)
     @ExceptionHandler(AccountLockedException.class)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> LoginAndcreateAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws BadCredentialsException, InternalServerErrorException {
         SimpleDateFormat format= new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         User user=userService.findByUserName(authenticationRequest.getUsername());
         if(user!=null){
@@ -61,19 +63,20 @@ public class JwtAuthenticationController {
             UserDTO userDTO=new UserDTO(user, token);
             return ResponseEntity.ok(userDTO);
         }else{
-            return new ResponseEntity<APIResponse>(new APIResponse(HttpStatus.FORBIDDEN,"Your account is locked. Please get assistance from admin."), HttpStatus.FORBIDDEN);
-
+//            System.err.println("failed to log in");
+//            return new ResponseEntity<APIResponse>(new APIResponse(HttpStatus.FORBIDDEN,"Your account is locked. Please get assistance from admin."), HttpStatus.FORBIDDEN);
+            throw new InternalServerErrorException("Login has failed!");
         }
 
     }
 
-    private void authenticate(String username, String password) throws Exception {
+    private void authenticate(String username, String password) throws BadCredentialsException {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+            throw new DisabledException("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new BadCredentialsException("INVALID_CREDENTIALS", e);
         }
     }
 }

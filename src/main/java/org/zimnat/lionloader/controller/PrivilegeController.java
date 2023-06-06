@@ -3,6 +3,7 @@ package org.zimnat.lionloader.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.zimnat.lionloader.aop.annotation.Auditor;
 import org.zimnat.lionloader.business.domain.Privilege;
 import org.zimnat.lionloader.business.domain.Role;
 import org.zimnat.lionloader.business.domain.User;
@@ -30,12 +31,14 @@ public class PrivilegeController {
     @Autowired
     UserService userService;
 
+    @Auditor
     @GetMapping("/")
     public ResponseEntity<?> getAll(){
         return ResponseEntity.ok(privilegeService.getAll());
     }
 
 
+    @Auditor
     @PostMapping("/")
     public ResponseEntity<?> createRole(@RequestBody PrivilegeDTO privilegeDTO){
         Privilege privilege= new Privilege();
@@ -51,6 +54,7 @@ public class PrivilegeController {
     }
 
 
+    @Auditor
     @PutMapping("/{id}")
     public ResponseEntity<?> createPrivilege(@RequestBody PrivilegeDTO privilegeDTO, @PathVariable("id") String id){
 

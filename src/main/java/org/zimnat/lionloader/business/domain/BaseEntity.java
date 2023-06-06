@@ -21,12 +21,11 @@ import java.util.Date;
 @Getter
 @Setter
 @MappedSuperclass
-//@EntityListeners(AuditingEntityListener.class)
 abstract public class BaseEntity implements Serializable {
     @Id
     private String id;
 
-    @JsonIgnore
+//    @JsonIgnore
     @CreatedBy
     @JoinColumn(name="created_by")
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)

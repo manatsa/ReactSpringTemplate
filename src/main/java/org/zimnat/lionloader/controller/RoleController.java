@@ -4,6 +4,7 @@ import org.joda.time.chrono.StrictChronology;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.zimnat.lionloader.aop.annotation.Auditor;
 import org.zimnat.lionloader.business.domain.BaseName;
 import org.zimnat.lionloader.business.domain.Privilege;
 import org.zimnat.lionloader.business.domain.Role;
@@ -37,6 +38,7 @@ public class RoleController {
    @Autowired
     UserService userService;
 
+   @Auditor
     @GetMapping("/")
     public ResponseEntity<?> getRoles(){
         try{
@@ -44,13 +46,14 @@ public class RoleController {
            List<Role> roles=roleService.getAll().stream().filter(role -> role!=null && role.getName()!=null).map(role -> {
                role.setPrivilegeString(privsToString(role));
                return role;
-           }).toList();
+           }).collect(Collectors.toList());
            return ResponseEntity.ok(roles);
         }catch (Exception e){
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 
+    @Auditor
     @PostMapping("/")
     public ResponseEntity<?> createRole(@RequestBody RoleDTO roleDTO){
         Role role=new Role();
@@ -67,6 +70,7 @@ public class RoleController {
     }
 
 
+    @Auditor
     @PutMapping("/{id}")
     public ResponseEntity<?> createRole(@RequestBody RoleDTO roleDTO, @PathVariable("id") String id){
 

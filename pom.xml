@@ -8,19 +8,23 @@
         <version>2.6.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>org.zimnat</groupId>
-    <artifactId>lionloader</artifactId>
+    <groupId>org.replica</groupId>
+    <artifactId>replica-commerce</artifactId>
     <version>1.0.0</version>
-    <name>LionLoader</name>
-    <description>LionLoader</description>
+    <name>replica</name>
+    <description>An ecommerce application for Replica Systems</description>
     <properties>
-        <java.version>17</java.version>
+        <java.version>11</java.version>
         <spring-boot-admin.version>3.0.2</spring-boot-admin.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <!--<dependency>
             <groupId>org.springframework.boot</groupId>

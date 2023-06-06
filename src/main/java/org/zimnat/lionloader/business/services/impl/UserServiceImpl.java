@@ -10,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +56,7 @@ public class UserServiceImpl implements UserService {
         return userRepo.getAllActive(Boolean.TRUE);
     }
 
+//    @LogExecutionTime
     @Override
     public List<User> getAll() {
         return userRepo.findAll();

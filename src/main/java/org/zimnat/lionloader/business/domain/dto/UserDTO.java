@@ -48,7 +48,7 @@ public class UserDTO {
         this.lastName = user.getLastName();
         this.userLevel = user.getUserLevel();
         this.dateCreated = user.getDateCreated();
-        this.roles = user.getRoles().stream().map(BaseName::getName).toList();
+        this.roles = user.getRoles().stream().map(BaseName::getName).collect(Collectors.toList());
         this.privileges = user.getRoles().stream().map(role -> role.getPrivileges().stream().map(BaseName::getName).collect(Collectors.joining(","))).collect(Collectors.toList());
     }
 
