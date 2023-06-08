@@ -8,6 +8,7 @@ import org.zimnat.lionloader.business.domain.User;
 import org.zimnat.lionloader.business.domain.dto.IndustryDTO;
 import org.zimnat.lionloader.business.repos.IndustryRepo;
 import org.zimnat.lionloader.business.services.IndustryService;
+import org.zimnat.lionloader.exceptions.InternalServerErrorException;
 
 import java.util.Date;
 import java.util.List;
@@ -24,6 +25,14 @@ public class IndustryServiceImpl implements IndustryService {
 
     @Autowired
     private IndustryRepo industryRepo;
+
+    @Override
+    public Industry findById(String id) throws InternalServerErrorException {
+        if(id==null || id.isEmpty()){
+            throw new InternalServerErrorException("Please provide a proper id.");
+        }
+        return industryRepo.findById(id).get();
+    }
 
     @Transactional
     @Override
